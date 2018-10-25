@@ -9,9 +9,11 @@ import {Slide} from './slidar2/core/Slide';
 import {bindKeyToFunction} from './slidar2/core/keys';
 import {renderSlide} from './slidar2/core/render';
 import {paramValue} from './slidar2/url/queryUtil';
+import {getParamValue} from './slidar2/url/queryUtil2';
 import {switchCurrentSlideToBlack} from './slidar2/showCode/controlShowCode';
 
-import './gapslides.css';
+import 'materialize-css/dist/css/materialize.css';
+import './gapslides.less';
 
 const renderFirstSlide = (startIndex) => {
     const slideNo = paramValue("slide");
@@ -63,7 +65,8 @@ const bindKeys = () => {
 
 init();
 
-renderSlide({slide: new Slide("init")});
+const initName = getParamValue("init", true) || "init";
+renderSlide({slide: new Slide(initName)});
 
 initReadyPromise.then((startIndex) => {
     renderFirstSlide(startIndex);

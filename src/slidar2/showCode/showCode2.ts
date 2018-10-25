@@ -9,6 +9,11 @@ const {createReverseStep} = steps;
 
 const Prism = (window as any).Prism;
 
+interface ShowCodeOptions {
+    noBackgroundColor?: boolean,
+    noLineNumbers?: boolean
+}
+
 const refresh = () => {
     return new Promise(resolve => {
         setTimeout(() => {
@@ -18,22 +23,25 @@ const refresh = () => {
     })
 }
 
-const render = (selector: string, language: string, _string: string) => {
+const render = (selector: string, language: string, _string: string, options: ShowCodeOptions) => {
     const html = Prism.highlight(_string, Prism.languages[language]);
-    $(selector).html(`<pre class="language-${language} line-numbers"><code>${html}</code></pre>`);
+    const style = options.noBackgroundColor ? "background-color: transparent;" : "";
+    const lineNumbersClass = options.noLineNumbers ? "" : "line-numbers";
+    $(selector).html(`<pre style="${style}" class="language-${language} ${lineNumbersClass}"><code>${html}</code></pre>`);
     return refresh();
 }
 
-export const css = (selector: string, cssString: string) => {
-    return render(selector, "css", cssString);
+export const css = (selector: string, cssString: string, options: ShowCodeOptions = {}) => {
+    return render(selector, "css", cssString, options);
 }
 
-export const js = (selector: string, jsString: string) => {
-    return render(selector, "javascript", jsString);
+export const js = (selector: string, jsString: string, options: ShowCodeOptions = {}) => {
+    return render(selector, "javascript", jsString, options);
 }
 
-export const bash = (selector: string, jsString: string) => {
-    return render(selector, "clike", jsString);
+export const bash = (selector: string, jsString: string, options: ShowCodeOptions = {}) => {
+    console.log("bash")
+    return render(selector, "clike", jsString, options);
 }
 
 export const remove = (selector: string) => {
@@ -83,7 +91,7 @@ export const switchToBlack = (selector: string) => {
     $(`${selector} .token`).addClass("onlyBlack");
 }
 
-export const showCode = {
+export const showCode2 = {
     css,
     js,
     bash,
